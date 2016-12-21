@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:  Recent Posts Widget Extended (Ben Modification)
+ * Plugin Name:  Recent Posts Widget Extended (Custom Mod for Premier Research)
  * Plugin URI:   https://www.theme-junkie.com/plugins/recent-posts-widget-extended/
  * Description:  Enables advanced widget that gives you total control over the output of your site’s most recent Posts.
  * Version:      0.9.9.6
