@@ -1,5 +1,13 @@
+### Note: Merely modifying the template of each li item in recent posts.  
+### It'd be nice to extend the plugin, but there's already so much going on inside...
+### To use the html filter provided, I'd have to use something like: http://php.net/manual/en/domdocument.loadhtml.php
+### and also find out if I can use a custom thumbnail size
+### Seeing that there are pull requests anyway, not sure the author is interested.
+
+# Basically, we're flippin the date.
+
 === Recent Posts Widget Extended ===
-Contributors: themejunkie, satrya
+Contributors: themejunkie, satrya, modded by (Ben Polinsky)
 Tags: recent posts, random posts, popular posts, thumbnails, widget, widgets, sidebar, excerpt, category, post tag, taxonomy, post type, post status, shortcode, multiple widgets
 Requires at least: 4.5
 Tested up to: 4.5.2

@@ -1,3 +1,5 @@
+<!--Mods by Ben:  div.widget-content-container added -->
+
 <?php
 /**
  * Various functions used by the plugin.
@@ -107,7 +109,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 	if ( $posts->have_posts() ) :
 
 		// Recent posts wrapper
-		$html = '<div ' . ( ! empty( $args['cssID'] ) ? 'id="' . sanitize_html_class( $args['cssID'] ) . '"' : '' ) . ' class="rpwe-block ' . ( ! empty( $args['css_class'] ) ? '' . sanitize_html_class( $args['css_class'] ) . '' : '' ) . '">';
+		$html = '<div ' . ( ! empty( $args['cssID'] ) ? 'id="' . sanitize_html_class( $args['cssID'] ) . '"' : '' ) . ' class="rpwe-block widget_recent_entries ' . ( ! empty( $args['css_class'] ) ? '' . sanitize_html_class( $args['css_class'] ) . '' : '' ) . '">';
 
 			$html .= '<ul class="rpwe-ul">';
 
@@ -121,18 +123,19 @@ function rpwe_get_recent_posts( $args = array() ) {
 					$image    = rpwe_resize( $img_url, $args['thumb_width'], $args['thumb_height'], true );
 
 					// Start recent posts markup.
-					$html .= '<li class="rpwe-li rpwe-clearfix">';
-
+					$html .= '<li class="">';
+					$html .= '<div class="widget-list-content-container">';
+					
 						if ( $args['thumb'] ) :
 
 							// Check if post has post thumbnail.
 							if ( has_post_thumbnail() ) :
+								$html .= 	'<span class="widget-image-container">';
 								$html .= '<a class="rpwe-img" href="' . esc_url( get_permalink() ) . '"  rel="bookmark">';
 									if ( $image ) :
 										$html .= '<img class="' . esc_attr( $args['thumb_align'] ) . ' rpwe-thumb" src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title() ) . '">';
 									else :
-										$html .= get_the_post_thumbnail( get_the_ID(),
-											array( $args['thumb_width'], $args['thumb_height'] ),
+										$html .= get_the_post_thumbnail( get_the_ID(), 'widget-image',
 											array(
 												'class' => $args['thumb_align'] . ' rpwe-thumb the-post-thumbnail',
 												'alt'   => esc_attr( get_the_title() )
@@ -140,6 +143,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 										);
 									endif;
 								$html .= '</a>';
+								$html .= '</span>';
 
 							// If no post thumbnail found, check if Get The Image plugin exist and display the image.
 							elseif ( function_exists( 'get_the_image' ) ) :
@@ -154,7 +158,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 							// Display default image.
 							elseif ( ! empty( $args['thumb_default'] ) ) :
-								$html .= sprintf( '<a class="rpwe-img" href="%1$s" rel="bookmark"><img class="%2$s rpwe-thumb rpwe-default-thumb" src="%3$s" alt="%4$s" width="%5$s" height="%6$s"></a>',
+								$html .= sprintf( '<span class="widget-image-container"><a class="rpwe-img" href="%1$s" rel="bookmark"><img class="%2$s rpwe-thumb rpwe-default-thumb" src="%3$s" alt="%4$s" width="%5$s" height="%6$s"></a></span>',
 									esc_url( get_permalink() ),
 									esc_attr( $args['thumb_align'] ),
 									esc_url( $args['thumb_default'] ),
@@ -167,14 +171,12 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 						endif;
 
-						$html .= '<h3 class="rpwe-title"><a href="' . esc_url( get_permalink() ) . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'recent-posts-widget-extended' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark">' . esc_attr( get_the_title() ) . '</a></h3>';
-
 						if ( $args['date'] ) :
 							$date = get_the_date();
 							if ( $args['date_relative'] ) :
 								$date = sprintf( __( '%s ago', 'recent-posts-widget-extended' ), human_time_diff( get_the_date( 'U' ), current_time( 'timestamp' ) ) );
 							endif;
-							$html .= '<time class="rpwe-time published" datetime="' . esc_html( get_the_date( 'c' ) ) . '">' . esc_html( $date ) . '</time>';
+							$html .= '<span class="post-date"><time class="rpwe-time published" datetime="' . esc_html( get_the_date( 'c' ) ) . '">' . esc_html( $date ) . '</time></span>';
 						elseif ( $args['date_modified'] ) : // if both date functions are provided, we use date to be backwards compatible
 							$date = get_the_modified_date();
 							if ( $args['date_relative'] ) :
@@ -182,6 +184,9 @@ function rpwe_get_recent_posts( $args = array() ) {
 							endif;
 							$html .= '<time class="rpwe-time modfied" datetime="' . esc_html( get_the_modified_date( 'c' ) ) . '">' . esc_html( $date ) . '</time>';
 						endif;
+						
+						// title						
+						$html .= '<a href="' . esc_url( get_permalink() ) . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'recent-posts-widget-extended' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark">' . esc_attr( mb_strimwidth(get_the_title(), 0, 80, '&hellip;') ) . '</a>';
 
 						if ( $args['comment_count'] ) :
 							if ( get_comments_number() == 0 ) {
@@ -202,7 +207,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 								endif;
 							$html .= '</div>';
 						endif;
-
+					$html .= '</div>';
 					$html .= '</li>';
 
 				endwhile;
